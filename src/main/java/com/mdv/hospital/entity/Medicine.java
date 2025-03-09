@@ -1,0 +1,25 @@
+package com.mdv.hospital.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "medicine")
+public class Medicine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "barcode")
+    private String barcode;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "name")
+    private String name;
+}

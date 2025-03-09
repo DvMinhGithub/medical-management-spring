@@ -1,0 +1,37 @@
+package com.mdv.hospital.security;
+
+import java.util.Collection;
+import java.util.Collections;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.mdv.hospital.entity.User;
+
+public class CustomUserDetails implements UserDetails {
+    private final transient User user;
+
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String roles = user.getRole().name();
+        return Collections.singleton((GrantedAuthority) () -> roles);
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getEmail();
+    }
+
+    public Long getId() {
+        return user.getId();
+    }
+}
