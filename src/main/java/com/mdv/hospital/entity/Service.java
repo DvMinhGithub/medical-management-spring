@@ -9,6 +9,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "service")
 public class Service {
@@ -30,5 +39,5 @@ public class Service {
 
     @ManyToOne
     @JoinColumn(name = "facility_id", referencedColumnName = "id")
-    private MedicalFacility facility; // Cơ sở y tế
+    private MedicalFacility medicalFacility;
 }

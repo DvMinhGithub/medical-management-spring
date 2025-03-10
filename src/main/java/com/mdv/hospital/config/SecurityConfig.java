@@ -49,9 +49,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/users/register", "/users/login", "/users/change-password", "/error")
                         .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/medicines/**")
+                        .requestMatchers(HttpMethod.POST, "/medicines/**", "/services/**", "/medical-facilities/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/medical-facilities/**")
+                        .requestMatchers(HttpMethod.PUT, "/medicines/**", "/services/**", "/medical-facilities/**")
                         .hasRole("ADMIN")
                         .anyRequest()
                         .authenticated())
