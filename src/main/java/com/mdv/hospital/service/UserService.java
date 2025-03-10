@@ -23,4 +23,6 @@ public interface UserService {
     void changePassword(ChangePasswordDTO changePasswordDTO);
 
     void inactiveUser();
+
+    void createAdminUser(CreateUserDTO createUserDTO);
 }

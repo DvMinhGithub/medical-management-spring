@@ -89,6 +89,22 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDTO(savedUser);
     }
 
+    @Override
+    public void createAdminUser(CreateUserDTO createUserDTO) {
+        if (userRepository.existsByEmail(createUserDTO.getEmail())) {
+            return;
+        }
+        User user = userMapper.toEntity(createUserDTO);
+
+        user.setPassword(passwordEncoder.encode(createUserDTO.getPassword()));
+        user.setRole(UserRole.ADMIN);
+        user.setUserStatus(UserStatus.ACTIVE);
+        User savedUser = userRepository.save(user);
+
+        user.setCode(generateUserCode(user.getRole(), savedUser.getId()));
+        savedUser = userRepository.save(user);
+    }
+
     private String generateUserCode(UserRole role, long userId) {
         String prefix = "";
         switch (role) {
