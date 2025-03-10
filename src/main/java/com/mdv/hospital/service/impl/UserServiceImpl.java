@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
 
         user.setCode(generateUserCode(user.getRole(), savedUser.getId()));
-        savedUser = userRepository.save(user);
+        userRepository.save(user);
     }
 
     private String generateUserCode(UserRole role, long userId) {
