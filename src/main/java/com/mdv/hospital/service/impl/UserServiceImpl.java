@@ -1,8 +1,9 @@
 package com.mdv.hospital.service.impl;
 
 import java.util.Date;
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import com.mdv.hospital.dto.request.ChangePasswordDTO;
 import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
 import com.mdv.hospital.dto.request.UpdateUserDTO;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
 import com.mdv.hospital.dto.response.MedicalServiceResponseDTO;
 import com.mdv.hospital.dto.response.UserResponseDTO;
@@ -71,40 +73,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> getUserByRole(String role) {
+    public CustomPageResponse<UserResponseDTO> getUserByRole(String role, Pageable pageable) {
         UserRole userRole;
         try {
             userRole = UserRole.valueOf(role);
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Role không hợp lệ!");
         }
-        List<UserResponseDTO> user = userRepository.findAllByRole(userRole).stream()
-                .map(userMapper::toDTO)
-                .toList();
-        return user;
+        Page<UserResponseDTO> users =
+                userRepository.findAllByRole(userRole, pageable).map(userMapper::toDTO);
+        return new CustomPageResponse<>(users);
     }
 
     @Override
-    public List<UserResponseDTO> getUsersByAppoinmenStatus(String status) {
+    public CustomPageResponse<UserResponseDTO> getUsersByAppoinmenStatus(String status, Pageable pageable) {
         AppointmentStatus appointmentStatus;
         try {
             appointmentStatus = AppointmentStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Trạng thái không hợp lệ!");
         }
-        List<UserResponseDTO> user = userRepository.findAllByAppoinmenStatus(appointmentStatus).stream()
-                .map(userMapper::toDTO)
-                .toList();
-        return user;
+        Page<UserResponseDTO> users = userRepository
+                .findAllByAppoinmenStatus(appointmentStatus, pageable)
+                .map(userMapper::toDTO);
+        return new CustomPageResponse<>(users);
     }
 
     @Override
-    public List<UserResponseDTO> getUsersByServiceId(Long serviceId) {
+    public CustomPageResponse<UserResponseDTO> getUsersByServiceId(Long serviceId, Pageable pageable) {
         MedicalServiceResponseDTO serviceDto = service.getServiceById(serviceId);
-        List<UserResponseDTO> user = userRepository.findAllByServiceId(serviceDto.getId()).stream()
-                .map(userMapper::toDTO)
-                .toList();
-        return user;
+        Page<UserResponseDTO> users =
+                userRepository.findAllByServiceId(serviceDto.getId(), pageable).map(userMapper::toDTO);
+        return new CustomPageResponse<>(users);
     }
 
     @Override

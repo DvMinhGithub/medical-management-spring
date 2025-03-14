@@ -1,11 +1,12 @@
 package com.mdv.hospital.service;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 import com.mdv.hospital.dto.request.ChangePasswordDTO;
 import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
 import com.mdv.hospital.dto.request.UpdateUserDTO;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
 import com.mdv.hospital.dto.response.UserResponseDTO;
 
@@ -14,11 +15,11 @@ public interface UserService {
 
     UserResponseDTO getUserByEmail(String email);
 
-    List<UserResponseDTO> getUserByRole(String role);
+    CustomPageResponse<UserResponseDTO> getUserByRole(String role, Pageable pageable);
 
-    List<UserResponseDTO> getUsersByAppoinmenStatus(String status);
+    CustomPageResponse<UserResponseDTO> getUsersByAppoinmenStatus(String status, Pageable pageable);
 
-    List<UserResponseDTO> getUsersByServiceId(Long serviceId);
+    CustomPageResponse<UserResponseDTO> getUsersByServiceId(Long serviceId, Pageable pageable);
 
     UserResponseDTO register(CreateUserDTO createUserDTO);
 

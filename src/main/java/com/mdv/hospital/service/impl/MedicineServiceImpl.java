@@ -1,10 +1,11 @@
 package com.mdv.hospital.service.impl;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mdv.hospital.dto.request.MedicineRequest;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicineResponseDTO;
 import com.mdv.hospital.entity.Medicine;
 import com.mdv.hospital.exception.ResourceNotFoundException;
@@ -25,10 +26,10 @@ public class MedicineServiceImpl implements MedicineService {
     private static final String MSG_MEDICINE_BARCODE_EXISTS = "Thuốc với mã vạch này đã tồn tại";
 
     @Override
-    public List<MedicineResponseDTO> getAllMedicines() {
-        return medicineRepository.findAll().stream()
-                .map(medicineMapper::toResponse)
-                .toList();
+    public CustomPageResponse<MedicineResponseDTO> getAllMedicines(Pageable pageable) {
+        Page<MedicineResponseDTO> medicines =
+                medicineRepository.findAll(pageable).map(medicineMapper::toResponse);
+        return new CustomPageResponse<>(medicines);
     }
 
     @Override

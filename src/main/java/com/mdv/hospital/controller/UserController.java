@@ -1,9 +1,8 @@
 package com.mdv.hospital.controller;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +17,7 @@ import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
 import com.mdv.hospital.dto.request.UpdateUserDTO;
 import com.mdv.hospital.dto.response.ApiResponse;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
 import com.mdv.hospital.dto.response.UserResponseDTO;
 import com.mdv.hospital.service.UserService;
@@ -44,22 +44,23 @@ public class UserController {
     }
 
     @GetMapping("/role/{role}")
-    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUserInfoByRole(@PathVariable("role") String role) {
-        List<UserResponseDTO> userResponseDTO = userService.getUserByRole(role);
+    public ResponseEntity<ApiResponse<CustomPageResponse<UserResponseDTO>>> getUserInfoByRole(
+            @PathVariable("role") String role, Pageable pageable) {
+        CustomPageResponse<UserResponseDTO> userResponseDTO = userService.getUserByRole(role, pageable);
         return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
     }
 
     @GetMapping("/appointment-status/{status}")
-    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUsersByAppoinmenStatus(
-            @PathVariable("status") String status) {
-        List<UserResponseDTO> userResponseDTO = userService.getUsersByAppoinmenStatus(status);
+    public ResponseEntity<ApiResponse<CustomPageResponse<UserResponseDTO>>> getUsersByAppoinmenStatus(
+            @PathVariable("status") String status, Pageable pageable) {
+        CustomPageResponse<UserResponseDTO> userResponseDTO = userService.getUsersByAppoinmenStatus(status, pageable);
         return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
     }
 
     @GetMapping("/service/{serviceId}")
-    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUsersByServiceId(
-            @PathVariable("serviceId") Long serviceId) {
-        List<UserResponseDTO> userResponseDTO = userService.getUsersByServiceId(serviceId);
+    public ResponseEntity<ApiResponse<CustomPageResponse<UserResponseDTO>>> getUsersByServiceId(
+            @PathVariable("serviceId") Long serviceId, Pageable pageable) {
+        CustomPageResponse<UserResponseDTO> userResponseDTO = userService.getUsersByServiceId(serviceId, pageable);
         return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
     }
 

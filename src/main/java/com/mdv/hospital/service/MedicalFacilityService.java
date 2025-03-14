@@ -1,8 +1,9 @@
 package com.mdv.hospital.service;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 import com.mdv.hospital.dto.request.MedicalFacilityRequestDTO;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicalFacilityResponseDTO;
 
 public interface MedicalFacilityService {
@@ -14,5 +15,5 @@ public interface MedicalFacilityService {
 
     MedicalFacilityResponseDTO getMedicalFacility(Long id);
 
-    List<MedicalFacilityResponseDTO> getAllMedicalFacilities();
+    CustomPageResponse<MedicalFacilityResponseDTO> getAllMedicalFacilities(Pageable pageable);
 }

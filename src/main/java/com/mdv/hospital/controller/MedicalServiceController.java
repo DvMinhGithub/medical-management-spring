@@ -1,9 +1,8 @@
 package com.mdv.hospital.controller;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mdv.hospital.dto.request.MedicalServiceRequestDTO;
 import com.mdv.hospital.dto.response.ApiResponse;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicalServiceResponseDTO;
 import com.mdv.hospital.service.MedicalServiceService;
 
@@ -34,15 +34,17 @@ public class MedicalServiceController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MedicalServiceResponseDTO>>> getAllMedicalServices() {
-        List<MedicalServiceResponseDTO> services = service.getAllServices();
+    public ResponseEntity<ApiResponse<CustomPageResponse<MedicalServiceResponseDTO>>> getAllServices(
+            Pageable pageable) {
+        CustomPageResponse<MedicalServiceResponseDTO> services = service.getAllServices(pageable);
         return ResponseEntity.ok(ApiResponse.success(services, "Lấy tất cả dịch vụ thành công!"));
     }
 
     @GetMapping("/facility/{id}")
-    public ResponseEntity<ApiResponse<List<MedicalServiceResponseDTO>>> getMedicalServicesByMedicalFacility(
-            @PathVariable("id") Long medicalFacilityId) {
-        List<MedicalServiceResponseDTO> services = service.getServicesByMedicalFacility(medicalFacilityId);
+    public ResponseEntity<ApiResponse<CustomPageResponse<MedicalServiceResponseDTO>>> getServicesByMedicalFacility(
+            @PathVariable("id") Long medicalFacilityId, Pageable pageable) {
+        CustomPageResponse<MedicalServiceResponseDTO> services =
+                service.getServicesByMedicalFacility(medicalFacilityId, pageable);
         return ResponseEntity.ok(ApiResponse.success(services, "Lấy dịch vụ theo cơ sở y tế thành công!"));
     }
 

@@ -1,9 +1,8 @@
 package com.mdv.hospital.controller;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mdv.hospital.dto.request.MedicalFacilityRequestDTO;
 import com.mdv.hospital.dto.response.ApiResponse;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicalFacilityResponseDTO;
 import com.mdv.hospital.service.MedicalFacilityService;
 
@@ -37,8 +37,10 @@ public class MedicalFacilityController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MedicalFacilityResponseDTO>>> getAllMedicalFacilities() {
-        List<MedicalFacilityResponseDTO> medicalFacility = medicalFacilityService.getAllMedicalFacilities();
+    public ResponseEntity<ApiResponse<CustomPageResponse<MedicalFacilityResponseDTO>>> getAllMedicalFacilities(
+            Pageable pageable) {
+        CustomPageResponse<MedicalFacilityResponseDTO> medicalFacility =
+                medicalFacilityService.getAllMedicalFacilities(pageable);
         return ResponseEntity.ok(ApiResponse.success(medicalFacility, "Lấy danh sách cơ sở y tế thành công!"));
     }
 

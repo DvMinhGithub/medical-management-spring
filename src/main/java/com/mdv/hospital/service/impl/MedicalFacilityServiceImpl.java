@@ -1,10 +1,11 @@
 package com.mdv.hospital.service.impl;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mdv.hospital.dto.request.MedicalFacilityRequestDTO;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicalFacilityResponseDTO;
 import com.mdv.hospital.entity.MedicalFacility;
 import com.mdv.hospital.mapper.MedicalFacilityMapper;
@@ -60,9 +61,10 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     }
 
     @Override
-    public List<MedicalFacilityResponseDTO> getAllMedicalFacilities() {
-        return medicalFacilityRepository.findAll().stream()
-                .map(medicalFacilityMapper::toResponse)
-                .toList();
+    public CustomPageResponse<MedicalFacilityResponseDTO> getAllMedicalFacilities(Pageable pageable) {
+        Page<MedicalFacilityResponseDTO> medicalFacilities =
+                medicalFacilityRepository.findAll(pageable).map(medicalFacilityMapper::toResponse);
+
+        return new CustomPageResponse<>(medicalFacilities);
     }
 }

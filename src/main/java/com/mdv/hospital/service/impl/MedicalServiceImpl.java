@@ -1,10 +1,11 @@
 package com.mdv.hospital.service.impl;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mdv.hospital.dto.request.MedicalServiceRequestDTO;
+import com.mdv.hospital.dto.response.CustomPageResponse;
 import com.mdv.hospital.dto.response.MedicalServiceResponseDTO;
 import com.mdv.hospital.entity.MedicalFacility;
 import com.mdv.hospital.entity.MedicalService;
@@ -27,10 +28,10 @@ public class MedicalServiceImpl implements MedicalServiceService {
     private static final String SERVICE_NOT_FOUND = "MedicalService not found";
 
     @Override
-    public List<MedicalServiceResponseDTO> getAllServices() {
-        return serviceRepository.findAll().stream()
-                .map(medicalServiceMapper::toServiceResponseDTO)
-                .toList();
+    public CustomPageResponse<MedicalServiceResponseDTO> getAllServices(Pageable pageable) {
+        Page<MedicalServiceResponseDTO> services =
+                serviceRepository.findAll(pageable).map(medicalServiceMapper::toServiceResponseDTO);
+        return new CustomPageResponse<>(services);
     }
 
     @Override
@@ -42,10 +43,12 @@ public class MedicalServiceImpl implements MedicalServiceService {
     }
 
     @Override
-    public List<MedicalServiceResponseDTO> getServicesByMedicalFacility(Long medicalFacilityId) {
-        return serviceRepository.findAllByMedicalFacilityId(medicalFacilityId).stream()
-                .map(medicalServiceMapper::toServiceResponseDTO)
-                .toList();
+    public CustomPageResponse<MedicalServiceResponseDTO> getServicesByMedicalFacility(
+            Long medicalFacilityId, Pageable pageable) {
+        Page<MedicalServiceResponseDTO> services = serviceRepository
+                .findAllByMedicalFacilityId(medicalFacilityId, pageable)
+                .map(medicalServiceMapper::toServiceResponseDTO);
+        return new CustomPageResponse<>(services);
     }
 
     @Override

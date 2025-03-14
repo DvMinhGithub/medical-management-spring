@@ -30,7 +30,7 @@ public class MedicalPrescription {
     private User patient; // Bệnh nhân
 
     @OneToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment; // Cuộc hẹn liên quan
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)

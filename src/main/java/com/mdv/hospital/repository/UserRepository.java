@@ -1,8 +1,9 @@
 package com.mdv.hospital.repository;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,12 +17,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByPhone(String phone);
 
-    List<User> findAllByRole(UserRole role);
+    Page<User> findAllByRole(UserRole role, Pageable pageable);
 
     @Query("SELECT DISTINCT u FROM User u JOIN Appointment a ON u = a.doctor OR u = a.patient WHERE a.status = :status")
-    List<User> findAllByAppoinmenStatus(AppointmentStatus status);
+    Page<User> findAllByAppoinmenStatus(AppointmentStatus status, Pageable pageable);
 
-    List<User> findAllByServiceId(Long serviceId);
+    Page<User> findAllByServiceId(Long serviceId, Pageable pageable);
 
     boolean existsByEmail(String email);
 
