@@ -39,6 +39,13 @@ public class ServiceController {
         return ResponseEntity.ok(ApiResponse.success(services, "Lấy tất cả dịch vụ thành công!"));
     }
 
+    @GetMapping("/facility/{id}")
+    public ResponseEntity<ApiResponse<List<ServiceResponseDTO>>> getServicesByMedicalFacility(
+            @PathVariable("id") Long medicalFacilityId) {
+        List<ServiceResponseDTO> services = service.getServicesByMedicalFacility(medicalFacilityId);
+        return ResponseEntity.ok(ApiResponse.success(services, "Lấy dịch vụ theo cơ sở y tế thành công!"));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ServiceResponseDTO>> getServiceById(@PathVariable("id") Long id) {
         ServiceResponseDTO serviceResponseDTO = service.getServiceById(id);

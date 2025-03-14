@@ -8,6 +8,8 @@ import com.mdv.hospital.dto.response.ServiceResponseDTO;
 public interface Service {
     List<ServiceResponseDTO> getAllServices();
 
+    List<ServiceResponseDTO> getServicesByMedicalFacility(Long medicalFacilityId);
+
     ServiceResponseDTO getServiceById(Long serviceId);
 
     ServiceResponseDTO createService(ServiceRequestDTO serviceRequest);

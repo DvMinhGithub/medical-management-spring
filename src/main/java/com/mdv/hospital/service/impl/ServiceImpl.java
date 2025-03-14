@@ -39,6 +39,13 @@ public class ServiceImpl implements Service {
     }
 
     @Override
+    public List<ServiceResponseDTO> getServicesByMedicalFacility(Long medicalFacilityId) {
+        return serviceRepository.findAllByMedicalFacilityId(medicalFacilityId).stream()
+                .map(serviceMapper::toServiceResponseDTO)
+                .toList();
+    }
+
+    @Override
     public ServiceResponseDTO createService(ServiceRequestDTO serviceRequest) {
         MedicalFacility facility = medicalFacilityRepository
                 .findById(serviceRequest.getFacilityId())
