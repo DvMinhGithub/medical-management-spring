@@ -4,12 +4,16 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.mdv.hospital.enums.AppointmentStatus;
 
 @Entity
 @Table(name = "appointment")
@@ -25,7 +29,8 @@ public class Appointment {
     private String note;
 
     @Column(name = "status")
-    private String status; // Ví dụ: PENDING, DONE, CANCELLED
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 
     @Column(name = "test_date")
     private LocalDateTime testDate;

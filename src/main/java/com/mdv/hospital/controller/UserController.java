@@ -1,5 +1,7 @@
 package com.mdv.hospital.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,26 @@ public class UserController {
     @GetMapping("/info/email/{email}")
     public ResponseEntity<ApiResponse<UserResponseDTO>> getUserInfoByEmail(@PathVariable("email") String email) {
         UserResponseDTO userResponseDTO = userService.getUserByEmail(email);
+        return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
+    }
+
+    @GetMapping("/role/{role}")
+    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUserInfoByRole(@PathVariable("role") String role) {
+        List<UserResponseDTO> userResponseDTO = userService.getUserByRole(role);
+        return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
+    }
+
+    @GetMapping("/appointment-status/{status}")
+    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUsersByAppoinmenStatus(
+            @PathVariable("status") String status) {
+        List<UserResponseDTO> userResponseDTO = userService.getUsersByAppoinmenStatus(status);
+        return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
+    }
+
+    @GetMapping("/service/{serviceId}")
+    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getUsersByServiceId(
+            @PathVariable("serviceId") Long serviceId) {
+        List<UserResponseDTO> userResponseDTO = userService.getUsersByServiceId(serviceId);
         return ResponseEntity.ok(ApiResponse.success(userResponseDTO, "Lấy thông tin tài khoản thành công!"));
     }
 

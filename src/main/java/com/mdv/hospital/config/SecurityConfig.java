@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.mdv.hospital.enums.UserRole;
 import com.mdv.hospital.security.CustomAccessDeniedHandler;
 import com.mdv.hospital.security.JwtAuthenticationEntryPoint;
 import com.mdv.hospital.security.JwtAuthenticationFilter;
@@ -50,9 +51,13 @@ public class SecurityConfig {
                         .requestMatchers("/users/register", "/users/login", "/users/change-password", "/error")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/medicines/**", "/services/**", "/medical-facilities/**")
-                        .hasRole("ADMIN")
+                        .hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/users/role/**")
+                        .hasRole(UserRole.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/medicines/**", "/services/**", "/medical-facilities/**")
-                        .hasRole("ADMIN")
+                        .hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/appointment-status/**")
+                        .hasAnyAuthority(UserRole.ADMIN.name(), UserRole.DOCTOR.name())
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

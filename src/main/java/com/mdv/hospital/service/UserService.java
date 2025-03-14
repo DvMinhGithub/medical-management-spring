@@ -1,5 +1,7 @@
 package com.mdv.hospital.service;
 
+import java.util.List;
+
 import com.mdv.hospital.dto.request.ChangePasswordDTO;
 import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
@@ -11,6 +13,12 @@ public interface UserService {
     UserResponseDTO getUserById(long userId);
 
     UserResponseDTO getUserByEmail(String email);
+
+    List<UserResponseDTO> getUserByRole(String role);
+
+    List<UserResponseDTO> getUsersByAppoinmenStatus(String status);
+
+    List<UserResponseDTO> getUsersByServiceId(Long serviceId);
 
     UserResponseDTO register(CreateUserDTO createUserDTO);
 

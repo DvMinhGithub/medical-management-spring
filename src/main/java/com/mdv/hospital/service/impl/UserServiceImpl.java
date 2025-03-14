@@ -1,6 +1,7 @@
 package com.mdv.hospital.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +17,10 @@ import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
 import com.mdv.hospital.dto.request.UpdateUserDTO;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
+import com.mdv.hospital.dto.response.ServiceResponseDTO;
 import com.mdv.hospital.dto.response.UserResponseDTO;
 import com.mdv.hospital.entity.User;
+import com.mdv.hospital.enums.AppointmentStatus;
 import com.mdv.hospital.enums.UserRole;
 import com.mdv.hospital.enums.UserStatus;
 import com.mdv.hospital.exception.BadRequestException;
@@ -36,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final com.mdv.hospital.service.Service service;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -63,6 +67,43 @@ public class UserServiceImpl implements UserService {
                 userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(userNotFoundMessage));
 
         return userMapper.toDTO(user);
+    }
+
+    @Override
+    public List<UserResponseDTO> getUserByRole(String role) {
+        UserRole userRole;
+        try {
+            userRole = UserRole.valueOf(role);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Role không hợp lệ!");
+        }
+        List<UserResponseDTO> user = userRepository.findAllByRole(userRole).stream()
+                .map(userMapper::toDTO)
+                .toList();
+        return user;
+    }
+
+    @Override
+    public List<UserResponseDTO> getUsersByAppoinmenStatus(String status) {
+        AppointmentStatus appointmentStatus;
+        try {
+            appointmentStatus = AppointmentStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Trạng thái không hợp lệ!");
+        }
+        List<UserResponseDTO> user = userRepository.findAllByAppoinmenStatus(appointmentStatus).stream()
+                .map(userMapper::toDTO)
+                .toList();
+        return user;
+    }
+
+    @Override
+    public List<UserResponseDTO> getUsersByServiceId(Long serviceId) {
+        ServiceResponseDTO serviceDto = this.service.getServiceById(serviceId);
+        List<UserResponseDTO> user = userRepository.findAllByServiceId(serviceDto.getId()).stream()
+                .map(userMapper::toDTO)
+                .toList();
+        return user;
     }
 
     @Override
