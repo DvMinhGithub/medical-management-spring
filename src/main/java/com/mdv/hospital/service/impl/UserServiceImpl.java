@@ -17,7 +17,7 @@ import com.mdv.hospital.dto.request.CreateUserDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
 import com.mdv.hospital.dto.request.UpdateUserDTO;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
-import com.mdv.hospital.dto.response.ServiceResponseDTO;
+import com.mdv.hospital.dto.response.MedicalServiceResponseDTO;
 import com.mdv.hospital.dto.response.UserResponseDTO;
 import com.mdv.hospital.entity.User;
 import com.mdv.hospital.enums.AppointmentStatus;
@@ -30,6 +30,7 @@ import com.mdv.hospital.mapper.UserMapper;
 import com.mdv.hospital.repository.UserRepository;
 import com.mdv.hospital.security.CustomUserDetailsService;
 import com.mdv.hospital.security.JwtTokenProvider;
+import com.mdv.hospital.service.MedicalServiceService;
 import com.mdv.hospital.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final com.mdv.hospital.service.Service service;
+    private final MedicalServiceService service;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponseDTO> getUsersByServiceId(Long serviceId) {
-        ServiceResponseDTO serviceDto = this.service.getServiceById(serviceId);
+        MedicalServiceResponseDTO serviceDto = service.getServiceById(serviceId);
         List<UserResponseDTO> user = userRepository.findAllByServiceId(serviceDto.getId()).stream()
                 .map(userMapper::toDTO)
                 .toList();

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceRequestDTO {
+public class MedicalServiceRequestDTO {
 
     @NotBlank(message = "Mô tả không được để trống!")
     private String description;

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceResponseDTO {
+public class MedicalServiceResponseDTO {
 
     private Long id;
 

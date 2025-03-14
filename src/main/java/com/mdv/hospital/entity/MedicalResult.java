@@ -31,7 +31,7 @@ public class MedicalResult {
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-    private Service service; // Dịch vụ
+    private MedicalService service; // Dịch vụ
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")

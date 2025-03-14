@@ -69,5 +69,5 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-    private Service service;
+    private MedicalService service;
 }
