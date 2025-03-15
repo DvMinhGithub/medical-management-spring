@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/accounts", "/accounts/patient", "/accounts/doctor")
                         .hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/facilities")
+                        .hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/accounts/patient-done-orders")
                         .hasAnyAuthority("ADMIN", "DOCTOR")
                         .anyRequest()
