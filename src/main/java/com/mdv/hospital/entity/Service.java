@@ -57,7 +57,7 @@ public class Service {
     @JsonIgnore
     private Set<Account> accounts;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facilityac_id")
     @JsonProperty("facility")
     private Facility facilitysv;
