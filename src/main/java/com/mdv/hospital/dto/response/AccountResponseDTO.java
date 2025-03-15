@@ -1,7 +1,10 @@
 package com.mdv.hospital.dto.response;
 
 import java.time.LocalDate;
+import java.util.Set;
 
+import com.mdv.hospital.entity.Order;
+import com.mdv.hospital.entity.Service;
 import com.mdv.hospital.enums.AccountStatus;
 import com.mdv.hospital.enums.AccountType;
 import com.mdv.hospital.enums.Gender;
@@ -26,5 +29,6 @@ public class AccountResponseDTO {
     private LocalDate dateOfBirth;
     private String code;
     private AccountType type;
-    private Long serviceId;
+    private Service service;
+    private Set<Order> orders;
 }

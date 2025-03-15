@@ -1,5 +1,7 @@
 package com.mdv.hospital.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,31 @@ public class AccountController {
     public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByPhone(@PathVariable("phone") String phone) {
         AccountResponseDTO accountDto = accountService.getAccountByPhone(phone);
         return ResponseEntity.ok(ApiResponse.success(accountDto, "Lấy thông tin tài khoản thành công!"));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<AccountResponseDTO>>> getAccount() {
+        List<AccountResponseDTO> accountDto = accountService.getAccount();
+        return ResponseEntity.ok(ApiResponse.success(accountDto, "Lấy thông tin tài khoản thành công!"));
+    }
+
+    @GetMapping("/patient")
+    public ResponseEntity<ApiResponse<List<AccountResponseDTO>>> getAccountPatient() {
+        List<AccountResponseDTO> accountDto = accountService.getAccountPatient();
+        return ResponseEntity.ok(ApiResponse.success(accountDto, "Lấy thông tin bệnh nhân thành công!"));
+    }
+
+    @GetMapping("/patient-done-orders")
+    public ResponseEntity<ApiResponse<List<AccountResponseDTO>>> getAccountPatientWithDoneOrders() {
+        List<AccountResponseDTO> accountDto = accountService.getAccountPatientWithDoneOrders();
+        return ResponseEntity.ok(
+                ApiResponse.success(accountDto, "Lấy thông tin bệnh nhân có đơn hàng đã hoàn thành thành công!"));
+    }
+
+    @GetMapping("/doctor")
+    public ResponseEntity<ApiResponse<List<AccountResponseDTO>>> getAccountDoctor() {
+        List<AccountResponseDTO> accountDto = accountService.getAccountDoctor();
+        return ResponseEntity.ok(ApiResponse.success(accountDto, "Lấy thông tin bác sĩ thành công!"));
     }
 
     @PutMapping("/profile")

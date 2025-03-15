@@ -1,5 +1,7 @@
 package com.mdv.hospital.service;
 
+import java.util.List;
+
 import com.mdv.hospital.dto.request.ActiveAccountRequestDTO;
 import com.mdv.hospital.dto.request.ChangePasswordRequestDTO;
 import com.mdv.hospital.dto.request.CreateAccountRequestDTO;
@@ -18,6 +20,14 @@ public interface AccountService {
     LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
 
     AccountResponseDTO getAccountByPhone(String phone);
+
+    List<AccountResponseDTO> getAccount();
+
+    List<AccountResponseDTO> getAccountPatient();
+
+    List<AccountResponseDTO> getAccountPatientWithDoneOrders();
+
+    List<AccountResponseDTO> getAccountDoctor();
 
     AccountResponseDTO updateProfile(UpdateAccountRequestDTO requestDTO);
 

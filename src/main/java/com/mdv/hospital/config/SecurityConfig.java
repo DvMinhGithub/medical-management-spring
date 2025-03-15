@@ -2,6 +2,7 @@ package com.mdv.hospital.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,6 +55,10 @@ public class SecurityConfig {
                                 "/accounts/reset-password/**",
                                 "/error/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/accounts", "/accounts/patient", "/accounts/doctor")
+                        .hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/accounts/patient-done-orders")
+                        .hasAnyAuthority("ADMIN", "DOCTOR")
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

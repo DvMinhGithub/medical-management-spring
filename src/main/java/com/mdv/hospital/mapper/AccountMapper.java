@@ -21,8 +21,13 @@ public interface AccountMapper {
     @Mapping(target = "type", ignore = true)
     Account toEntity(CreateAccountRequestDTO requestDTO);
 
-    @Mapping(target = "serviceId", ignore = true)
-    AccountResponseDTO toDTO(Account user);
+    @Mapping(target = "service", ignore = true)
+    @Mapping(target = "orders", ignore = true)
+    AccountResponseDTO toDTO(Account account);
+
+    @Mapping(target = "service", source = "serviceac")
+    @Mapping(target = "orders", source = "history")
+    AccountResponseDTO toDTOEager(Account account);
 
     @Mapping(target = "accountStatus", ignore = true)
     @Mapping(target = "code", ignore = true)

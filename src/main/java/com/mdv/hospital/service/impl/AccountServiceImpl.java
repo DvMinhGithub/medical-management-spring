@@ -1,6 +1,7 @@
 package com.mdv.hospital.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,6 +95,32 @@ public class AccountServiceImpl implements AccountService {
                 .refreshToken(generateRefreshToken)
                 .expiredAt(expiration)
                 .build();
+    }
+
+    @Override
+    public List<AccountResponseDTO> getAccount() {
+        return accountRepository.findAll().stream().map(accountMapper::toDTO).toList();
+    }
+
+    @Override
+    public List<AccountResponseDTO> getAccountPatient() {
+        return accountRepository.findAllByType(AccountType.PATIENT).stream()
+                .map(accountMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<AccountResponseDTO> getAccountPatientWithDoneOrders() {
+        return accountRepository.findPatientsWithDoneOrders().stream()
+                .map(accountMapper::toDTOEager)
+                .toList();
+    }
+
+    @Override
+    public List<AccountResponseDTO> getAccountDoctor() {
+        return accountRepository.findAllByType(AccountType.DOCTOR).stream()
+                .map(accountMapper::toDTOEager)
+                .toList();
     }
 
     private String generateAccountCode(AccountType type, long userId) {

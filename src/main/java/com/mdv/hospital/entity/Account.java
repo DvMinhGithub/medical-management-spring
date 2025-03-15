@@ -78,7 +78,7 @@ public class Account {
     @OneToOne(mappedBy = "admin", fetch = FetchType.LAZY)
     private Facility facility;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Order> history;
 
@@ -86,7 +86,7 @@ public class Account {
     @JsonIgnore
     private Set<Order> doctorSchedule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
     @JsonIgnore
     private Service serviceac;
