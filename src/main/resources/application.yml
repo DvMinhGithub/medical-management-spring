@@ -2,7 +2,29 @@ spring:
   application:
     name: hospital
   datasource:
-    url: jdbc:mysql://localhost:3306/hospital?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/db_hospital?createDatabaseIfNotExist=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      allow-pool-suspension: true
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      leak-detection-threshold: 5000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+app:
+  jwt:
+    accessToken:
+      secretKey: "your-very-long-and-secure-access-token-secret-1234567890"
+      expiredTime: 3600000 # 1 giờ
+    refreshToken:
+      secretKey: "your-very-long-and-secure-refresh-token-secret-0987654321"
+      expiredTime: 604800000 # 7 ngày
+  account:
+    admin:
+      email: admin@gmail.com
+      fullName: admin
+      password: 123456
