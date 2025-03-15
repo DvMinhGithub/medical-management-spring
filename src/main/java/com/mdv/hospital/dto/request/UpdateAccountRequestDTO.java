@@ -22,7 +22,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAccountRequestDTO {
+public class UpdateAccountRequestDTO {
 
     @NotBlank(message = "Địa chỉ là bắt buộc")
     private String address;

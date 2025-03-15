@@ -44,7 +44,12 @@ public class SecurityConfig {
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/accounts/register", "/accounts/login")
+                        .requestMatchers(
+                                "/accounts/register",
+                                "/accounts/login",
+                                "/accounts/check-user/**",
+                                "/accounts/active/**",
+                                "/accounts/reset-password/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

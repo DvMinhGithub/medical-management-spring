@@ -10,8 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.mdv.hospital.dto.request.ActiveAccountRequestDTO;
+import com.mdv.hospital.dto.request.ChangePasswordRequestDTO;
 import com.mdv.hospital.dto.request.CreateAccountRequestDTO;
 import com.mdv.hospital.dto.request.LoginRequestDTO;
+import com.mdv.hospital.dto.request.ResetPasswordRequestDTO;
+import com.mdv.hospital.dto.request.UpdateAccountRequestDTO;
 import com.mdv.hospital.dto.response.AccountResponseDTO;
 import com.mdv.hospital.dto.response.LoginResponseDTO;
 import com.mdv.hospital.entity.Account;
@@ -53,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
         account.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         account.setType(AccountType.PATIENT);
-        account.setAccountStatus(AccountStatus.ACTIVE);
+        account.setAccountStatus(AccountStatus.INACTIVE);
         Account savedAccount = accountRepository.save(account);
         account.setCode(generateAccountCode(account.getType(), savedAccount.getId()));
         savedAccount = accountRepository.save(account);
@@ -124,5 +128,64 @@ public class AccountServiceImpl implements AccountService {
         user.setCode(generateAccountCode(user.getType(), savedUser.getId()));
         accountRepository.save(user);
         log.info("Admin user created successfully");
+    }
+
+    @Override
+    public AccountResponseDTO updateProfile(UpdateAccountRequestDTO requestDTO) {
+        Account account = accountRepository
+                .findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Tài khoản không tồn tại!"));
+
+        Account updatedAccount = accountMapper.toEntity(account, requestDTO);
+        Account savedAccount = accountRepository.save(updatedAccount);
+
+        return accountMapper.toDTO(savedAccount);
+    }
+
+    @Override
+    public void changePassword(Long accountId, ChangePasswordRequestDTO requestDTO) {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tài khoản không tồn tại!"));
+
+        if (!passwordEncoder.matches(requestDTO.getOldPassword(), account.getPassword())) {
+            throw new BadRequestException("Mật khẩu cũ không chính xác!");
+        }
+
+        account.setPassword(passwordEncoder.encode(requestDTO.getNewPassword()));
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void activeAccount(Long accountId, ActiveAccountRequestDTO requestDTO) {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tài khoản không tồn tại!"));
+
+        if (!account.getCode().equals(requestDTO.getCode())) {
+            throw new BadRequestException("Mã kích hoạt không chính xác!");
+        }
+
+        account.setAccountStatus(AccountStatus.ACTIVE);
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void resetPassword(Long accountId, ResetPasswordRequestDTO requestDTO) {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tài khoản không tồn tại!"));
+
+        account.setPassword(passwordEncoder.encode(requestDTO.getNewPassword()));
+        accountRepository.save(account);
+    }
+
+    @Override
+    public AccountResponseDTO getAccountByPhone(String phone) {
+        Account account = accountRepository
+                .findByPhone(phone)
+                .orElseThrow(() -> new ResourceNotFoundException("Tài khoản không tồn tại!"));
+
+        return accountMapper.toDTO(account);
     }
 }
