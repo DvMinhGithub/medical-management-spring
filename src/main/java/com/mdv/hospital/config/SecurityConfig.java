@@ -1,9 +1,10 @@
 package com.mdv.hospital.config;
 
+import static com.mdv.hospital.config.Constants.*;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.mdv.hospital.security.CustomAccessDeniedHandler;
 import com.mdv.hospital.security.JwtAuthenticationEntryPoint;
@@ -48,23 +47,15 @@ public class SecurityConfig {
                 .sessionManagement(
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(
-                                "/accounts/register",
-                                "/accounts/login",
-                                "/accounts/check-user/**",
-                                "/accounts/active/**",
-                                "/accounts/reset-password/**",
-                                "/error/**")
+                        .requestMatchers(PUBLIC_ENDPOINTS)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/accounts", "/accounts/patient", "/accounts/doctor")
+                        .requestMatchers(HttpMethod.GET, ADMIN_GET_ENDPOINTS)
                         .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/facilities", "/services", "/medicines")
+                        .requestMatchers(HttpMethod.POST, ADMIN_POST_ENDPOINTS)
                         .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/services")
-                        .hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/accounts/patient-done-orders")
+                        .requestMatchers(HttpMethod.GET, ADMIN_DOCTOR_GET_ENDPOINTS)
                         .hasAnyAuthority("ADMIN", "DOCTOR")
-                        .requestMatchers(HttpMethod.DELETE, "/medicines/**")
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_DELETE_ENDPOINTS)
                         .hasAuthority("ADMIN")
                         .anyRequest()
                         .authenticated())
@@ -74,19 +65,5 @@ public class SecurityConfig {
                         .accessDeniedHandler(customAccessDeniedHandler));
 
         return http.build();
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .exposedHeaders("Authorization");
-            }
-        };
     }
 }
